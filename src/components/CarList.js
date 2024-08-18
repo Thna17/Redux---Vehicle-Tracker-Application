@@ -1,33 +1,48 @@
-import { useSelector, useDispatch } from "react-redux";
-import { removeCar } from "../store";
-const CarList = () => {
-    const dispatch = useDispatch();
-    const cars = useSelector(({cars: {data, searchTerm}}) => {
-        return data.filter((car) => car.name.toLowerCase().includes(searchTerm.toLowerCase()));
-    })
-    const handleCarDelete = (car) => {
-        // Assuming this is a function to remove car from the store
-        console.log(`Deleting car: ${car.name} - ${car.cost}`)
-        // dispatch(removeCar(car.id))
-        dispatch(removeCar(car.id))
-    }
-    const renderedCarList = cars.map((car) => {
-        return (
-            <div key={car.id} className="panel">
-                <p>
-                    {car.name} - {car.cost}
-                </p>
-                <button onClick={() => handleCarDelete(car)} className="button is-danger">
-                    Delete
-                </button>
-            </div>
-        )
-    })
+import { useSelector, useDispatch } from 'react-redux';
+import { removeCar } from '../store';
+
+function CarList() {
+  const dispatch = useDispatch();
+  const { cars, name } = useSelector(({ form, cars: { data, searchTerm } }) => {
+    const filteredCars = data.filter((car) =>
+      car.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    return {
+      cars: filteredCars,
+      name: form.name,
+    };
+  });
+
+  const handleCarDelete = (car) => {
+    dispatch(removeCar(car.id));
+  };
+
+  const renderedCars = cars.map((car) => {
+    // DECIDE IF THIS CAR SHOULD BE BOLD
+    const bold = name && car.name.toLowerCase().includes(name.toLowerCase());
+
+    return (
+      <div key={car.id} className={`panel ${bold && 'bold'}`}>
+        <p>
+          {car.name} - ${car.cost}
+        </p>
+        <button
+          className="button is-danger"
+          onClick={() => handleCarDelete(car)}
+        >
+          Delete
+        </button>
+      </div>
+    );
+  });
+
   return (
     <div className="car-list">
-        {renderedCarList}
-        </div>
-  )
+      {renderedCars}
+      <hr />
+    </div>
+  );
 }
 
-export default CarList
+export default CarList;
