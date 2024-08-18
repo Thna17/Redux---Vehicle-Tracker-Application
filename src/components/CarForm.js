@@ -18,9 +18,7 @@ const CarForm = () => {
         event.preventDefault();
         // Assuming this is a function to add car to the store
         dispatch(addCar({name, cost}))
-        // Reset the form
-        dispatch(changeName(''))
-        dispatch(changeCost(0))
+
     }
 
     const handleCostChange = (event) => {

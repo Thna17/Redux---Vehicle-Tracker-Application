@@ -1,5 +1,7 @@
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux";
+import { removeCar } from "../store";
 const CarList = () => {
+    const dispatch = useDispatch();
     const cars = useSelector((state) => {
         return state.cars.data;
     })
@@ -7,6 +9,7 @@ const CarList = () => {
         // Assuming this is a function to remove car from the store
         console.log(`Deleting car: ${car.name} - ${car.cost}`)
         // dispatch(removeCar(car.id))
+        dispatch(removeCar(car.id))
     }
     const renderedCarList = cars.map((car) => {
         return (
